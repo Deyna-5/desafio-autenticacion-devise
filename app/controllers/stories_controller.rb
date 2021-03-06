@@ -25,6 +25,7 @@ class StoriesController < ApplicationController
   # POST /stories.json
   def create
     @story = Story.new(story_params)
+    @story.user_id = current_user.id
 
     respond_to do |format|
       if @story.save
@@ -59,6 +60,10 @@ class StoriesController < ApplicationController
       format.html { redirect_to stories_url, notice: 'Story was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def my_stories
+      @stories = Story.all.where(user_id: params[:id])
   end
 
   private
